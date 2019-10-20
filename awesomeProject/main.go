@@ -1,10 +1,12 @@
 package main
 
 import (
+	"awesomeProject/template/src"
 	"fmt"
+	"log"
+	"sync"
 	"time"
 )
-import "sync"
 
 var wg = sync.WaitGroup{}
 var bridge = make(chan interface{}, 100)
@@ -19,14 +21,15 @@ func producer(wg *sync.WaitGroup, bridge *chan interface{}, closeBridge *chan st
 	}()
 	for i:=0; i<20; i++ {
 		if i == 3 {
-			*bridge <- "Str" + string(i)
+			fmtStr := fmt.Sprint("Sending close bridge ", i)
+			*bridge <- fmtStr
 			// Send message to close channel
 			*closeBridge <- struct{}{}
 			break;
 		} else {
 			*bridge <- i
 		}
-		time.Sleep(1000 * time.Millisecond)
+		time.Sleep(200 * time.Millisecond)
 	}
 }
 
@@ -144,7 +147,7 @@ func main () {
 	fmt.Printf("%v %T %v %T\n", myint, myint, myfloat, myfloat)
 	fmt.Printf("Hello go\n")
 
-	defer fmt.Println ("Goodbye babes")
+	defer log.Println ("Goodbye babes")
 
 	// Arrays copied
 	var myarray [6]int = [6]int {10, 20, 30, 50, 60, 70}
@@ -213,4 +216,6 @@ func main () {
 	go producer(&wg, &bridge, &closeBridge)
 	go consumer(&wg, &bridge, &closeBridge)
 	wg.Wait()
+
+	src.ExecuteTemplate()
 }
