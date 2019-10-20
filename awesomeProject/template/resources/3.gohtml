@@ -1,0 +1,9 @@
+<html lang="en-US">
+    {{ template "header" .Header}}
+    <body>
+        {{ range .Body }}
+            <li> {{.}} </li>
+        {{ end }}
+    </body>
+    {{ template "footer" .Footer}}
+</html>

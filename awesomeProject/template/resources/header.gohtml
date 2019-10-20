@@ -1,0 +1,12 @@
+{{ define "header"}}
+    <h1>{{caps "Header Section"}}</h1>
+    <header>
+        <h1>
+            {{ range $key, $value := .}}
+                {{ if ne . "Htwo"}}
+                    <li> {{$key}} : {{$value}} </li>
+                {{end}}
+            {{end}}
+        </h1>
+    </header>
+{{ end }}
