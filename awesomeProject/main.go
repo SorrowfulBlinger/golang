@@ -1,7 +1,8 @@
 package main
 
 import (
-	"awesomeProject/template/src"
+	"awesomeProject/server"
+	"awesomeProject/template"
 	"fmt"
 	"log"
 	"sync"
@@ -217,5 +218,11 @@ func main () {
 	go consumer(&wg, &bridge, &closeBridge)
 	wg.Wait()
 
-	src.ExecuteTemplate()
+	template.ExecuteTemplate()
+
+	/* HTTP Server */
+	go server.StartHTTPServer()
+
+	// w/o go routine for it to block main thread
+	server.StartEchoSocket()
 }
